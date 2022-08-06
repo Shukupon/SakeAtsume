@@ -1,6 +1,6 @@
 # sakeatsume
 
-A new Flutter project.
+日本酒の情報を保存するためのアプリケーション.
 
 ## Getting Started
 
