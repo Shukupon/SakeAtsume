@@ -16,6 +16,7 @@ For help getting started with Flutter development, view the
 samples, guidance on mobile development, and a full API reference.
 
 ## タスク
+- [ ] モデルの作成
 - [ ] 一覧画面の作成
   - [ ] 画面要素の配置
   - [ ] スクロールの実装
