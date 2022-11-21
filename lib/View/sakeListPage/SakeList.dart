@@ -35,6 +35,7 @@ class _SakesState extends State<Sakes> {
           },
           child: Card(
             child: Padding(
+              padding: EdgeInsets.all(20.0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: <Widget>[
@@ -50,7 +51,6 @@ class _SakesState extends State<Sakes> {
                   ),
                 ],
               ),
-              padding: EdgeInsets.all(20.0),
             ),
           ),
         );
