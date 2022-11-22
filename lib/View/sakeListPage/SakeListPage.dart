@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:sakeatsume/View/sakeListPage/SakeList.dart';
+import 'package:sakeatsume/View/sakeListPage/Sakes.dart';
 import 'package:sakeatsume/View/registerPage/RegisterPage.dart';
 
 class SakeListPage extends StatefulWidget {

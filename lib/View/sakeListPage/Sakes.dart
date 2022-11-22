@@ -40,7 +40,7 @@ class _SakesState extends State<Sakes> {
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: <Widget>[
                   Text(
-                    _sakeLists[index].getName(),
+                    _sakeLists[index].getName()(),
                     style: _biggerFont,
                   ),
                   Icon(
@@ -57,4 +57,6 @@ class _SakesState extends State<Sakes> {
       },
     );
   }
+
+  void loadSavedSake() {}
 }
