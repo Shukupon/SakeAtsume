@@ -111,4 +111,44 @@ class Sake {
   void setImageFilePath2(String imageFilePath2) {
     _imageFilePath2 = imageFilePath2;
   }
+
+  static Sake createEmptySake() {
+    return Sake(<String>[
+      '',
+      '',
+      '',
+      '',
+      '',
+      '',
+      '',
+      '',
+      '',
+      '',
+      '',
+      '',
+      '',
+      '',
+      '',
+    ]);
+  }
+
+  List<String> toStringList() {
+    return <String>[
+      _index,
+      _name,
+      _createdDate,
+      _price,
+      _prefecture,
+      _brewery,
+      _kindsOfRice,
+      _alcoholDegree,
+      _sakeDegree,
+      _kind,
+      _polishingRatio,
+      _score,
+      _memo,
+      _imageFilePath1,
+      _imageFilePath2
+    ];
+  }
 }

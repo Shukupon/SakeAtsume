@@ -9,7 +9,9 @@ import 'package:sakeatsume/main.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class RegisterPage extends StatefulWidget {
-  const RegisterPage({super.key});
+  final Sake sake;
+
+  const RegisterPage({super.key, required this.sake});
 
   @override
   State<RegisterPage> createState() => _RegisterPageState();
@@ -24,7 +26,7 @@ class _RegisterPageState extends State<RegisterPage> {
 
   @override
   Widget build(BuildContext buildContext) {
-    Future.value(setImage());
+    Future.value(setSakeImage());
 
     return Scaffold(
       appBar: AppBar(
@@ -96,17 +98,8 @@ class _RegisterPageState extends State<RegisterPage> {
     }
   }
 
-  Future<void> setSakeImage() async {
-    final String? imagePath = prefs.getString('imagePath');
-    if (imagePath != null) {
-      imageFile = File(imagePath);
-      setState(() {});
-    }
-  }
-
   Future<void> saveSakeImagePath() async {
     if (imageFile != null) {
-      final SharedPreferences prefs = await SharedPreferences.getInstance();
       await prefs.setString('imagePath', imageFile!.path);
       setState(() {});
     }
@@ -116,7 +109,8 @@ class _RegisterPageState extends State<RegisterPage> {
     prefs = await SharedPreferences.getInstance();
   }
 
-  Future<void> setImage() async {
+  // このクラスでは使用しないが、Sakesで使用するため残しておく
+  Future<void> setSakeImage() async {
     await getSharedPreference();
     final String? imagePath = prefs.getString('imagePath');
     if (imagePath != null) {
@@ -124,11 +118,26 @@ class _RegisterPageState extends State<RegisterPage> {
       setState(() {});
     }
   }
-}
 
-void _registerSake(BuildContext buildContext) {
-  // TODO: 保存処理
-  Navigator.pop(buildContext);
+  void _registerSake(BuildContext buildContext) {
+    // TODO: 保存処理
+    // 新規登録の場合にインデックスを採番
+    List<String>? totalIndex = prefs.getStringList('indexes');
+    if (sake.getIndex() == '') {
+      if (totalIndex == null) {
+        totalIndex = <String>['0'];
+        sake.setIndex('0');
+      } else {
+        String nextIndex = (int.parse(totalIndex.last) + 1).toString();
+        sake.setIndex(nextIndex);
+        totalIndex.add(nextIndex);
+      }
+    }
+
+    prefs.setStringList(sake.getIndex(), sake.toStringList());
+
+    Navigator.pop(buildContext);
+  }
 }
 
 Future<File> getImageFileFromAssets(String path) async {

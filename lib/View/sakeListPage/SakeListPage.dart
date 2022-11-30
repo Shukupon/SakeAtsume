@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sakeatsume/View/sakeListPage/Sakes.dart';
+import 'package:sakeatsume/Model/Sake.dart';
 import 'package:sakeatsume/View/registerPage/RegisterPage.dart';
 
 class SakeListPage extends StatefulWidget {
@@ -39,7 +40,8 @@ class _SakeListPageState extends State<SakeListPage> {
   void showRegisterPage(BuildContext buildContext) {
     Navigator.push(
       buildContext,
-      MaterialPageRoute(builder: (context) => const RegisterPage()),
+      MaterialPageRoute(
+          builder: (context) => RegisterPage(sake: Sake.createEmptySake())),
     );
   }
 }

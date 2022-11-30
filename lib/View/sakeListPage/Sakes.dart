@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:sakeatsume/main.dart';
 import 'package:sakeatsume/Model/Sake.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:sakeatsume/View/registerPage/RegisterPage.dart';
+import "dart:io";
 
 class Sakes extends StatefulWidget {
   const Sakes({super.key});
@@ -11,52 +14,68 @@ class Sakes extends StatefulWidget {
 
 class _SakesState extends State<Sakes> {
   final _sakeLists = <Sake>[];
-  final _savedSakeLists = <Sake>{};
   final _biggerFont = const TextStyle(fontSize: 18);
+  late List<String>? totalIndex;
+  late SharedPreferences prefs;
 
   @override
   Widget build(BuildContext context) {
+    Future.value(getSharedPreference());
+    loadSavedSake;
+
     return ListView.builder(
-      padding: const EdgeInsets.all(16.0),
-      itemBuilder: (context, index) {
-        if (index >= _sakeLists.length) {
-          _sakeLists.add(new Sake(index.toString()));
-        }
-        final alreadySaved = _savedSakeLists.contains(_sakeLists[index]);
-        return GestureDetector(
-          onTap: () {
-            setState(() {
-              if (alreadySaved) {
-                _savedSakeLists.remove(_sakeLists[index]);
-              } else {
-                _savedSakeLists.add(_sakeLists[index]);
-              }
-            });
-          },
-          child: Card(
-            child: Padding(
-              padding: EdgeInsets.all(20.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: <Widget>[
-                  Text(
-                    _sakeLists[index].getName()(),
-                    style: _biggerFont,
-                  ),
-                  Icon(
-                    // NEW from here ...
-                    alreadySaved ? Icons.favorite : Icons.favorite_border,
-                    color: alreadySaved ? Colors.red : null,
-                    semanticLabel: alreadySaved ? 'Remove from saved' : 'Save',
-                  ),
-                ],
-              ),
-            ),
-          ),
-        );
-      },
+        padding: const EdgeInsets.all(16.0),
+        itemCount: _sakeLists.length,
+        itemBuilder: (context, index) {
+          return _sakeItem(_sakeLists[index]);
+        });
+  }
+
+  // TODO: 表示要素とその順番を調整
+  Widget _sakeItem(Sake sake) {
+    return Container(
+      decoration: new BoxDecoration(
+          border:
+              new Border(bottom: BorderSide(width: 1.0, color: Colors.grey))),
+      child: ListTile(
+        leading: Image.file(File(sake.getImageFilePath1())),
+        title: Text(
+          sake.getName(),
+          style: TextStyle(color: Colors.black, fontSize: 18.0),
+        ),
+        subtitle: Text(sake.getCreatedDate()),
+        onTap: () {
+          showRegisterPage(context, sake);
+        },
+      ),
     );
   }
 
-  void loadSavedSake() {}
+  void loadSavedSake() async {
+    totalIndex = prefs.getStringList('indexes');
+    if (totalIndex != null) {
+      totalIndex?.forEach((index) {
+        List<String>? savedSakeData = prefs.getStringList(index);
+        if (savedSakeData != null) _sakeLists.add(Sake(savedSakeData));
+      });
+    }
+  }
+
+  void showRegisterPage(BuildContext buildContext, Sake sake) {
+    Navigator.push(
+      buildContext,
+      MaterialPageRoute(builder: (context) => RegisterPage(sake: sake)),
+    );
+  }
+
+  void deleteSake(String index) {
+    totalIndex?.remove(index);
+    prefs.setStringList('indexes', totalIndex!);
+    prefs.remove(index);
+    setState(() {});
+  }
+
+  Future<void> getSharedPreference() async {
+    prefs = await SharedPreferences.getInstance();
+  }
 }
