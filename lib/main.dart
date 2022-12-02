@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sakeatsume/Model/Sake.dart';
 import 'package:sakeatsume/View/sakeListPage/SakeListPage.dart';
-import 'package:sakeatsume/View/sakeListPage/SakeList.dart';
+import 'package:sakeatsume/View/sakeListPage/Sakes.dart';
 
 Future<void> main() async {
   runApp(const MyApp());

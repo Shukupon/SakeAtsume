@@ -19,22 +19,27 @@ class RegisterPage extends StatefulWidget {
 
 class _RegisterPageState extends State<RegisterPage> {
   late Sake sake;
-  // 一時的に作成,後でSakeに統合
-  File? imageFile;
-  String defaultSakeFilePath = 'images/sake_grey.jpeg';
+  final String defaultSakeFilePath = 'images/sake_grey.jpeg';
   late SharedPreferences prefs;
 
   @override
-  Widget build(BuildContext buildContext) {
-    Future.value(setSakeImage());
+  void initState() {
+    super.initState();
+    getSharedPreference();
 
+    // 受け取ったsakeを格納
+    sake = widget.sake;
+  }
+
+  @override
+  Widget build(BuildContext buildContext) {
     return Scaffold(
       appBar: AppBar(
         title: Center(child: Text('登録')),
         actions: <Widget>[
           TextButton(
             onPressed: () => _registerSake(context),
-            child: Text(
+            child: const Text(
               '保存',
               style: TextStyle(
                 fontSize: 18,
@@ -53,16 +58,25 @@ class _RegisterPageState extends State<RegisterPage> {
               ),
               height: 200,
               child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
                   GestureDetector(
                     onTap: () {
-                      getSakeImage();
-                      saveSakeImagePath();
-                      setState(() {});
+                      getSakeImage1(sake);
                     },
                     child: Container(
-                      child: imageFile != null
-                          ? Image.file(imageFile!)
+                      child: sake.getImageFilePath1() != ''
+                          ? Image.file(File(sake.getImageFilePath1()))
+                          : Image.asset(defaultSakeFilePath),
+                    ),
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      getSakeImage2(sake);
+                    },
+                    child: Container(
+                      child: sake.getImageFilePath2() != ''
+                          ? Image.file(File(sake.getImageFilePath2()))
                           : Image.asset(defaultSakeFilePath),
                     ),
                   ),
@@ -74,9 +88,80 @@ class _RegisterPageState extends State<RegisterPage> {
               decoration: BoxDecoration(
                 border: Border.all(color: Colors.grey),
               ),
+              child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: <Widget>[
+                    Text('評価',
+                        style: const TextStyle(
+                            color: Colors.black,
+                            fontSize: 28.0,
+                            fontWeight: FontWeight.bold)),
+                    Padding(
+                      padding: const EdgeInsets.all(20.0),
+                      child: DropdownButton(
+                        value: sake.getScore(),
+                        items: const [
+                          DropdownMenuItem(
+                            value: '',
+                            child: Text(''),
+                          ),
+                          DropdownMenuItem(
+                            value: '1',
+                            child: Text('1'),
+                          ),
+                          DropdownMenuItem(
+                            value: '2',
+                            child: Text('2'),
+                          ),
+                          DropdownMenuItem(
+                            value: '3',
+                            child: Text('3'),
+                          ),
+                          DropdownMenuItem(
+                            value: '4',
+                            child: Text('4'),
+                          ),
+                          DropdownMenuItem(
+                            value: '5',
+                            child: Text('5'),
+                          )
+                        ],
+                        onChanged: (String? value) {
+                          setState(() {
+                            sake.setScore(value!);
+                          });
+                        },
+                      ),
+                    ),
+                  ]),
             ),
             Container(
               height: 80,
+              decoration: BoxDecoration(
+                border: Border.all(color: Colors.grey),
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: <Widget>[
+                  SizedBox(
+                      width: 150.0,
+                      child: TextField(
+                        enabled: true,
+                        controller: TextEditingController(text: sake.getName()),
+                        decoration: const InputDecoration(labelText: '名前'),
+                        onChanged: (value) => {sake.setName(value)},
+                      )),
+                  SizedBox(
+                      width: 150.0,
+                      child: TextField(
+                        enabled: true,
+                        controller:
+                            TextEditingController(text: sake.getCreatedDate()),
+                        decoration: const InputDecoration(labelText: '登録日'),
+                        onChanged: (value) => {sake.setCreatedDate(value)},
+                      )),
+                ],
+              ),
             ),
             Container(
               height: 80,
@@ -90,33 +175,26 @@ class _RegisterPageState extends State<RegisterPage> {
     );
   }
 
-  Future<void> getSakeImage() async {
+  Future<void> getSakeImage1(Sake sake) async {
     final ImagePicker picker = ImagePicker();
     final pickerFile = await picker.pickImage(source: ImageSource.gallery);
     if (pickerFile != null) {
-      imageFile = File(pickerFile.path);
+      sake.setImageFilePath1(pickerFile.path);
+      setState(() {});
     }
   }
 
-  Future<void> saveSakeImagePath() async {
-    if (imageFile != null) {
-      await prefs.setString('imagePath', imageFile!.path);
+  Future<void> getSakeImage2(Sake sake) async {
+    final ImagePicker picker = ImagePicker();
+    final pickerFile = await picker.pickImage(source: ImageSource.gallery);
+    if (pickerFile != null) {
+      sake.setImageFilePath2(pickerFile.path);
       setState(() {});
     }
   }
 
   Future<void> getSharedPreference() async {
     prefs = await SharedPreferences.getInstance();
-  }
-
-  // このクラスでは使用しないが、Sakesで使用するため残しておく
-  Future<void> setSakeImage() async {
-    await getSharedPreference();
-    final String? imagePath = prefs.getString('imagePath');
-    if (imagePath != null) {
-      imageFile = File(imagePath);
-      setState(() {});
-    }
   }
 
   void _registerSake(BuildContext buildContext) {
@@ -132,8 +210,8 @@ class _RegisterPageState extends State<RegisterPage> {
         sake.setIndex(nextIndex);
         totalIndex.add(nextIndex);
       }
+      prefs.setStringList('indexes', totalIndex);
     }
-
     prefs.setStringList(sake.getIndex(), sake.toStringList());
 
     Navigator.pop(buildContext);

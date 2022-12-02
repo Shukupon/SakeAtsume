@@ -17,11 +17,11 @@ class _SakeListPageState extends State<SakeListPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Center(child: Text('一覧')),
+        title: const Center(child: Text('一覧')),
         actions: <Widget>[
           TextButton(
-            onPressed: () => showRegisterPage(context),
-            child: Text(
+            onPressed: () => _showRegisterPage(context),
+            child: const Text(
               '登録',
               style: TextStyle(
                 fontSize: 18,
@@ -31,17 +31,18 @@ class _SakeListPageState extends State<SakeListPage> {
           ),
         ],
       ),
-      body: const Center(
+      body: Center(
         child: Sakes(),
       ),
     );
   }
 
-  void showRegisterPage(BuildContext buildContext) {
-    Navigator.push(
+  void _showRegisterPage(BuildContext buildContext) async {
+    await Navigator.push(
       buildContext,
       MaterialPageRoute(
           builder: (context) => RegisterPage(sake: Sake.createEmptySake())),
     );
+    setState(() {});
   }
 }
