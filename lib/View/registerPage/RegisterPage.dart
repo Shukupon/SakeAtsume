@@ -35,7 +35,8 @@ class _RegisterPageState extends State<RegisterPage> {
   Widget build(BuildContext buildContext) {
     return Scaffold(
       appBar: AppBar(
-        title: Center(child: Text('登録')),
+        centerTitle: true,
+        title: const Center(child: Text('登録')),
         actions: <Widget>[
           TextButton(
             onPressed: () => _registerSake(context),
@@ -91,8 +92,8 @@ class _RegisterPageState extends State<RegisterPage> {
               child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: <Widget>[
-                    Text('評価',
-                        style: const TextStyle(
+                    const Text('評価',
+                        style: TextStyle(
                             color: Colors.black,
                             fontSize: 28.0,
                             fontWeight: FontWeight.bold)),

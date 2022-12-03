@@ -17,6 +17,7 @@ class _SakeListPageState extends State<SakeListPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        centerTitle: true,
         title: const Center(child: Text('一覧')),
         actions: <Widget>[
           TextButton(

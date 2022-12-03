@@ -5,6 +5,7 @@ import 'package:sakeatsume/main.dart';
 import 'package:sakeatsume/Model/Sake.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sakeatsume/View/registerPage/RegisterPage.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import "dart:io";
 
 class Sakes extends StatefulWidget {
@@ -43,7 +44,20 @@ class _SakesState extends State<Sakes> {
               padding: const EdgeInsets.all(16.0),
               itemCount: _sakeLists.length,
               itemBuilder: (context, index) {
-                return _sakeItem(_sakeLists[index]);
+                return Slidable(
+                    endActionPane: ActionPane(
+                        motion: const ScrollMotion(),
+                        extentRatio: 0.2,
+                        children: [
+                          SlidableAction(
+                            onPressed: (context) {
+                              _deleteSake(_sakeLists[index].getIndex());
+                            },
+                            backgroundColor: Colors.red,
+                            icon: Icons.delete,
+                          )
+                        ]),
+                    child: _sakeItem(_sakeLists[index]));
               },
             );
           }
