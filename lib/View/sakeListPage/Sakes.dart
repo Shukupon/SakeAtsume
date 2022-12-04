@@ -46,17 +46,18 @@ class _SakesState extends State<Sakes> {
               itemBuilder: (context, index) {
                 return Slidable(
                     endActionPane: ActionPane(
-                        motion: const ScrollMotion(),
-                        extentRatio: 0.2,
-                        children: [
-                          SlidableAction(
-                            onPressed: (context) {
-                              _deleteSake(_sakeLists[index].getIndex());
-                            },
-                            backgroundColor: Colors.red,
-                            icon: Icons.delete,
-                          )
-                        ]),
+                      motion: const ScrollMotion(),
+                      extentRatio: 0.2,
+                      children: [
+                        SlidableAction(
+                          onPressed: (context) {
+                            _deleteSake(_sakeLists[index].getIndex());
+                          },
+                          backgroundColor: Colors.red,
+                          icon: Icons.delete,
+                        ),
+                      ],
+                    ),
                     child: _sakeItem(_sakeLists[index]));
               },
             );

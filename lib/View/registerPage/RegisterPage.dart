@@ -145,22 +145,28 @@ class _RegisterPageState extends State<RegisterPage> {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
                   SizedBox(
-                      width: 150.0,
-                      child: TextField(
-                        enabled: true,
-                        controller: TextEditingController(text: sake.getName()),
-                        decoration: const InputDecoration(labelText: '名前'),
-                        onChanged: (value) => {sake.setName(value)},
-                      )),
+                    width: 150.0,
+                    child: TextField(
+                      enabled: true,
+                      style: const TextStyle(fontSize: 20.0),
+                      controller: TextEditingController(text: sake.getName()),
+                      decoration: const InputDecoration(labelText: '名前'),
+                      onChanged: (value) => {sake.setName(value)},
+                    ),
+                  ),
                   SizedBox(
-                      width: 150.0,
-                      child: TextField(
-                        enabled: true,
-                        controller:
-                            TextEditingController(text: sake.getCreatedDate()),
-                        decoration: const InputDecoration(labelText: '登録日'),
-                        onChanged: (value) => {sake.setCreatedDate(value)},
-                      )),
+                    width: 150.0,
+                    child: TextField(
+                      enabled: true,
+                      style: const TextStyle(fontSize: 20.0),
+                      controller:
+                          TextEditingController(text: sake.getCreatedDate()),
+                      decoration: const InputDecoration(
+                        labelText: '登録日',
+                      ),
+                      onChanged: (value) => {sake.setCreatedDate(value)},
+                    ),
+                  ),
                 ],
               ),
             ),
@@ -168,6 +174,148 @@ class _RegisterPageState extends State<RegisterPage> {
               height: 80,
               decoration: BoxDecoration(
                 border: Border.all(color: Colors.grey),
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: <Widget>[
+                  SizedBox(
+                    width: 150.0,
+                    child: TextField(
+                      enabled: true,
+                      style: const TextStyle(fontSize: 20.0),
+                      controller: TextEditingController(text: sake.getPrice()),
+                      decoration: const InputDecoration(labelText: '価格'),
+                      onChanged: (value) => {sake.setPrice(value)},
+                    ),
+                  ),
+                  SizedBox(
+                    width: 150.0,
+                    child: TextField(
+                      enabled: true,
+                      style: const TextStyle(fontSize: 20.0),
+                      controller:
+                          TextEditingController(text: sake.getPrefecture()),
+                      decoration: const InputDecoration(labelText: '生産県'),
+                      onChanged: (value) => {sake.setPrefecture(value)},
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Container(
+              height: 80,
+              decoration: BoxDecoration(
+                border: Border.all(color: Colors.grey),
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: <Widget>[
+                  SizedBox(
+                    width: 150.0,
+                    child: TextField(
+                      enabled: true,
+                      style: const TextStyle(fontSize: 20.0),
+                      controller:
+                          TextEditingController(text: sake.getBrewery()),
+                      decoration: const InputDecoration(labelText: '酒蔵'),
+                      onChanged: (value) => {sake.setBrewery(value)},
+                    ),
+                  ),
+                  SizedBox(
+                    width: 150.0,
+                    child: TextField(
+                      enabled: true,
+                      style: const TextStyle(fontSize: 20.0),
+                      controller:
+                          TextEditingController(text: sake.getKindsOfRice()),
+                      decoration: const InputDecoration(labelText: '酒米'),
+                      onChanged: (value) => {sake.setKindsOfRice(value)},
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Container(
+              height: 80,
+              decoration: BoxDecoration(
+                border: Border.all(color: Colors.grey),
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: <Widget>[
+                  SizedBox(
+                    width: 150.0,
+                    child: TextField(
+                      enabled: true,
+                      style: const TextStyle(fontSize: 20.0),
+                      controller:
+                          TextEditingController(text: sake.getAlcoholDegree()),
+                      decoration: const InputDecoration(labelText: 'アルコール数'),
+                      onChanged: (value) => {sake.setAlcoholDegree(value)},
+                    ),
+                  ),
+                  SizedBox(
+                    width: 150.0,
+                    child: TextField(
+                      enabled: true,
+                      style: const TextStyle(fontSize: 20.0),
+                      controller:
+                          TextEditingController(text: sake.getSakeDegree()),
+                      decoration: const InputDecoration(labelText: '日本酒度'),
+                      onChanged: (value) => {sake.setSakeDegree(value)},
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Container(
+              height: 80,
+              decoration: BoxDecoration(
+                border: Border.all(color: Colors.grey),
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: <Widget>[
+                  SizedBox(
+                    width: 150.0,
+                    child: TextField(
+                      enabled: true,
+                      style: const TextStyle(fontSize: 20.0),
+                      controller: TextEditingController(text: sake.getName()),
+                      decoration: const InputDecoration(labelText: '種類'),
+                      onChanged: (value) => {sake.setName(value)},
+                    ),
+                  ),
+                  SizedBox(
+                    width: 150.0,
+                    child: TextField(
+                      enabled: true,
+                      style: const TextStyle(fontSize: 20.0),
+                      controller:
+                          TextEditingController(text: sake.getCreatedDate()),
+                      decoration: const InputDecoration(labelText: '精米歩合'),
+                      onChanged: (value) => {sake.setCreatedDate(value)},
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Container(
+              height: 160.0,
+              decoration: BoxDecoration(
+                border: Border.all(color: Colors.grey),
+              ),
+              child: TextField(
+                enabled: true,
+                style: const TextStyle(fontSize: 20.0),
+                maxLines: null,
+                controller: TextEditingController(text: sake.getMemo()),
+                decoration: const InputDecoration(
+                  labelText: 'メモ',
+                  enabledBorder:
+                      UnderlineInputBorder(borderSide: BorderSide.none),
+                ),
+                onChanged: (value) => {sake.setMemo(value)},
               ),
             ),
           ],
