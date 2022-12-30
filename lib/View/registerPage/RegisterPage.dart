@@ -1,3 +1,5 @@
+// ignore_for_file: unnecessary_new
+
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -7,6 +9,8 @@ import 'package:path_provider/path_provider.dart';
 import 'package:sakeatsume/Model/Sake.dart';
 import 'package:sakeatsume/main.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import "package:intl/intl.dart";
+import 'package:intl/date_symbol_data_local.dart';
 
 class RegisterPage extends StatefulWidget {
   final Sake sake;
@@ -26,6 +30,7 @@ class _RegisterPageState extends State<RegisterPage> {
   void initState() {
     super.initState();
     getSharedPreference();
+    initializeDateFormatting("ja_JP");
 
     // 受け取ったsakeを格納
     sake = widget.sake;
@@ -161,10 +166,10 @@ class _RegisterPageState extends State<RegisterPage> {
                       style: const TextStyle(fontSize: 20.0),
                       controller:
                           TextEditingController(text: sake.getCreatedDate()),
-                      decoration: const InputDecoration(
-                        labelText: '登録日',
-                      ),
-                      onChanged: (value) => {sake.setCreatedDate(value)},
+                      decoration: const InputDecoration(labelText: '登録日'),
+                      onTap: () {
+                        _selectDate(context, sake);
+                      },
                     ),
                   ),
                 ],
@@ -292,9 +297,9 @@ class _RegisterPageState extends State<RegisterPage> {
                       enabled: true,
                       style: const TextStyle(fontSize: 20.0),
                       controller:
-                          TextEditingController(text: sake.getCreatedDate()),
+                          TextEditingController(text: sake.getPolishingRatio()),
                       decoration: const InputDecoration(labelText: '精米歩合'),
-                      onChanged: (value) => {sake.setCreatedDate(value)},
+                      onChanged: (value) => {sake.setPolishingRatio(value)},
                     ),
                   ),
                 ],
@@ -364,6 +369,20 @@ class _RegisterPageState extends State<RegisterPage> {
     prefs.setStringList(sake.getIndex(), sake.toStringList());
 
     Navigator.pop(buildContext);
+  }
+
+  Future<void> _selectDate(BuildContext context, Sake sake) async {
+    var formatter = new DateFormat('yyyy-MM-dd', "ja_JP");
+    final DateTime? pickedDate = await showDatePicker(
+      context: context,
+      initialDate: DateTime.tryParse(sake.getCreatedDate()) != null
+          ? DateTime.parse(sake.getCreatedDate())
+          : new DateTime.now(),
+      firstDate: new DateTime(2000),
+      lastDate: new DateTime.now().add(const Duration(days: 365)),
+    );
+    if (pickedDate != null) sake.setCreatedDate(formatter.format(pickedDate));
+    setState(() {});
   }
 }
 
